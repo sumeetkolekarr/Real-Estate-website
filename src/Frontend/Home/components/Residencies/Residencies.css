@@ -78,3 +78,7 @@
     position: initial;
   }
 }
+
+.imgCardRounded{
+  border-radius: 10px;
+}

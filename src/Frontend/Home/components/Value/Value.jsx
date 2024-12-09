@@ -12,7 +12,7 @@ import {
   MdOutlineArrowDropDown,
   MdOutlineArrowDropDownCircle,
 } from "react-icons/md";
-import data from "../../utils/accordion.jsx";
+import data from "../../utils/accordion";
 import "./Value.css";
 // Demo styles, see 'Styles' section below for some notes on use.
 
@@ -34,9 +34,9 @@ const Value = () => {
           <span className="primaryText">Value We Give to You</span>
 
           <span className="secondaryText">
-            We always ready to help by providijng the best services for you.
+          We are always ready to help by providing the best services for you.
             <br />
-            We beleive a good blace to live can make your life better
+            We believe a good place to live can make your life better.
           </span>
 
           <Accordion

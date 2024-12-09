@@ -11,7 +11,7 @@ const Residencies = () => {
       <div className="paddings innerWidth r-container">
         <div className="flexColStart r-head">
           <span className="orangeText">Best Choices</span>
-          <span className="primaryText">Popular Residencies</span>
+          <span className="primaryText">Popular Courses</span>
         </div>
         <Swiper {...sliderSettings}>
           <SlideNextButton />
@@ -19,11 +19,11 @@ const Residencies = () => {
           {data.map((card, i) => (
             <SwiperSlide key={i}>
               <div className="flexColStart r-card">
-                <img src={card.image} alt="home" />
+                <img src={card.image} className="imgCardRounded" alt="home" />
 
                 <span className="secondaryText r-price">
-                  <span style={{ color: "orange" }}>$</span>
-                  <span>{card.price}</span>
+                  {/* <span style={{ color: "orange" }}>$</span>
+                  <span>{card.price}</span> */}
                 </span>
                 <span className="primaryText">{card.name}</span>
                 <span className="secondaryText">{card.detail}</span>
