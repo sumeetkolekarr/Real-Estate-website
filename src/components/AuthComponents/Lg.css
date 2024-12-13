@@ -1,0 +1,211 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+}
+
+body {
+    /* overflow-y: hidden; */
+    overflow-x: hidden;
+}
+
+.gameimg {
+    width: 50vw;
+    height: 100vh;
+    object-fit: cover;
+    filter: brightness(75%);
+}
+
+.lg_head {
+    position: absolute;
+    color: aliceblue;
+    top: 15px;
+    left: 20px;
+    z-index: 1;
+}
+
+.lg_flex {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.signin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    flex-direction: column;
+}
+
+.signin_head {
+    margin-bottom: 2.5vh;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: black;
+}
+
+.signin_form {
+    height: 40px;
+    width: 350px;
+    margin: 10px;
+    border-radius: 20px;
+    border: none;
+    color: black;
+    background-color: rgb(233, 233, 233);
+    border: 10px solid rgb(233, 233, 233);
+    font-weight: bold;
+}
+
+/* .signin_form:active{
+    box-shadow: 10px 10px 44px -14px rgba(105,16,165,0.65);
+    -webkit-box-shadow: 10px 10px 44px -14px rgba(105,16,165,0.65);
+    -moz-box-shadow: 10px 10px 44px -14px rgba(105,16,165,0.65);;
+} */
+
+.signin_form::placeholder {
+    color: rgb(87, 87, 87);
+    font-weight: bold;
+}
+
+.signin_form:focus {
+    color: rgb(87, 87, 87);
+    font-weight: bold;
+}
+
+.remember_signin {
+    margin-left: -135px;
+    font-size: 13px;
+    font-weight: bold;
+    color: black;
+}
+
+.form_remfor {
+    display: flex;
+    width: 350px;
+    justify-content: space-between;
+}
+
+.form_remfor p {
+    color: black;
+    font-size: 13px;
+}
+
+.signinbtn {
+    margin-top: 1.5vh;
+    height: 40px;
+    width: 350px;
+    border: none;
+    color: aliceblue;
+    background-color: blueviolet;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.noacc_signin {
+    margin-top: 1vh;
+    color: black;
+}
+
+.noacc_signin strong {
+    color: blueviolet;
+}
+
+.snup {
+    display: flex;
+}
+
+@media (min-width: 1px) {
+    .lg_flex {
+        flex-direction: column;
+    }
+
+    .signin{
+        margin-top: 5vh;
+    }
+
+    .gameimg {
+        width: 0;
+        height: 0;
+    }
+
+    .signin {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .signin_form {
+        width: 250px;
+    }
+
+    .signinbtn {
+        width: 250px;
+    }
+
+    .signin_head {
+        font-size: 1.5rem;
+    }
+
+    .lg_head {
+        color: rgb(41, 41, 41);
+    }
+
+
+}
+
+@media (min-width: 576px) {
+    .signin_form {
+        width: 350px;
+    }
+
+    .signin{
+        margin-top: 0vh;
+    }
+
+    .signinbtn {
+        width: 350px;
+    }
+
+    .signin_head {
+        font-size: 2rem;
+    }
+
+}
+
+@media (min-width: 768px) {
+    .lg_flex {
+        flex-direction: row-reverse;
+    }
+
+    .gameimg {
+        width: 50vw;
+        height: 100vh;
+    }
+
+    .signin {
+        width: 50vw;
+        height: 100vh;
+    }
+
+    .signin_head {
+        font-size: 2.5rem;
+    }
+
+    .lg_head {
+        color: aliceblue;
+    }
+
+
+}
+
+@media (min-width: 992px) {}
+
+@media (min-width: 1200px) {}
+
+@media (min-width: 1400px) {}
+
+a{
+    text-decoration: none;
+}

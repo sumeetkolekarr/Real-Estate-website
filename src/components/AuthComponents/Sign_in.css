@@ -1,0 +1,33 @@
+.sn_flex {
+    display: flex;
+}
+
+.sn_head {
+    position: absolute;
+    color: aliceblue;
+    top: 15px;
+    right: 20px;
+    z-index: 1;
+}
+
+@media (min-width: 1px) {
+    .sn_head {
+        color: rgb(41, 41, 41);
+    }
+}
+
+@media (min-width: 576px) {}
+
+@media (min-width: 768px) {
+    .sn_head {
+        color: aliceblue;
+
+    }
+
+}
+
+@media (min-width: 992px) {}
+
+@media (min-width: 1200px) {}
+
+@media (min-width: 1400px) {}

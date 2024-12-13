@@ -32,7 +32,7 @@
   border-radius: 999px;
   position: absolute;
   right: 28%;
-  top: -10%;
+  top: 0%;
   z-index: -1;
 }
 .search-bar {
@@ -80,6 +80,10 @@
   .hero-title>h1{
     font-size: 2.5rem;
     line-height: 3rem;
+  }
+  .hero-left{
+    justify-content: center !important;
+    align-items: center !important;
   }
   .image-container{
     width: 95%;
