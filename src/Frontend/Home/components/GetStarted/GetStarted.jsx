@@ -12,7 +12,7 @@ const GetStarted = () => {
             Find your solution soon
           </span>
           <button className="button" href>
-            <a href="mailto:sumeetkolekarr555@gmail.com">Get Started</a>
+            <a className="mobileAnchor" href="mailto:sumeetkolekarr555@gmail.com">Get Started</a>
           </button>
         </div>
       </div>

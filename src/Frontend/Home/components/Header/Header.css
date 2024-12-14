@@ -33,6 +33,8 @@
   .mobileAnchor {
     overflow: hidden;
     margin-bottom: 12px;
+    text-decoration: none;
+    color: black;
     width: 100%;
     text-align: center;
   }
