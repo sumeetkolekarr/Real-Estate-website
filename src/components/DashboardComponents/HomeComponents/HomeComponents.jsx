@@ -3,6 +3,15 @@ import { shallowEqual, useSelector } from "react-redux";
 import ShowItems from "../ShowItems/ShowItems";
 import fire from "../../../config/firebase";
 import { addMonths, isAfter, startOfDay } from "date-fns";
+import { 
+  LucideFolder, 
+  LucideFile, 
+  LucideMail, 
+  LucideUser, 
+  LucideCalendar, 
+  LucideUnlock, 
+  LucideBan 
+} from "lucide-react";
 
 const HomeComponents = () => {
   const { isLoading, userFolders, userFiles } = useSelector(
@@ -219,19 +228,17 @@ const HomeComponents = () => {
   }, {});
 
   return (
-    <div className="container-fluid">
+    <div className="container mx-auto px-4 py-6">
       {isLoading ? (
-        <div className="d-flex justify-content-center align-items-center vh-100">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
         </div>
       ) : (
         <>
-          <div className="mb-3">
+          <div className="mb-6">
             <input
               type="text"
-              className="form-control"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               placeholder="Search by name or email"
               value={searchQuery}
               onChange={handleSearchChange}
@@ -240,8 +247,9 @@ const HomeComponents = () => {
           {userFolders.length > 0 && (
             <ShowItems
               title={
-                <h2 className="text-primary">
-                  <i className="fas fa-folder me-2"></i>Created Folders
+                <h2 className="text-2xl font-bold text-blue-600 flex items-center mb-4">
+                  <LucideFolder className="mr-2" />
+                  Created Folders
                 </h2>
               }
               type="folder"
@@ -251,8 +259,9 @@ const HomeComponents = () => {
           {userFiles.length > 0 && (
             <ShowItems
               title={
-                <h2 className="text-primary">
-                  <i className="fas fa-file me-2"></i>Uploaded Files
+                <h2 className="text-2xl font-bold text-blue-600 flex items-center mb-4">
+                  <LucideFile className="mr-2" />
+                  Uploaded Files
                 </h2>
               }
               type="file"
@@ -268,64 +277,67 @@ const HomeComponents = () => {
             />
           )}
           <div>
-            <h2 className="text-primary text-center">User Data</h2>
+            <h2 className="text-2xl font-bold text-blue-600 text-center mb-6">User Data</h2>
             {Object.keys(filteredUserData).map((courseCode) => (
-              <div key={courseCode} className="card mb-3">
-                <div className="card-header bg-primary text-white">
-                  <h3>
-                    <i className="fas fa-folder me-2"></i>
-                    {folderData[courseCode]?.folderName || "Unknown Folder"}
-                  </h3>
-                  <h4>Course Code: {courseCode}</h4>
+              <div key={courseCode} className="bg-white shadow-md rounded-lg overflow-hidden mb-6">
+                <div className="bg-blue-600 text-white p-4">
+                  <div className="flex items-center mb-2">
+                    <LucideFolder className="mr-2" />
+                    <h3 className="text-xl font-semibold">
+                      {folderData[courseCode]?.folderName || "Unknown Folder"}
+                    </h3>
+                  </div>
+                  <h4 className="text-sm">Course Code: {courseCode}</h4>
                 </div>
-                <div className="card-body">
-                  <ul className="list-group">
-                    {filteredUserData[courseCode].map((user) => (
-                      <li key={user.id} className="list-group-item">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <div>
-                            <p>
-                              <i className="fas fa-envelope me-2"></i>
-                              {user.email}
-                            </p>
-                            <p>
-                              <i className="fas fa-user me-2"></i>
-                              {user.displayName}
-                            </p>
-                            <p>
-                              <i className="fas fa-calendar me-2"></i>
-                              Expiry Date:{" "}
-                              {user.expiryDate
-                                ? user.expiryDate.toLocaleDateString()
-                                : "N/A"}
-                            </p>
-                          </div>
-                          <div>
-                            {user.blockedCourses &&
-                            user.blockedCourses.includes(courseCode) ? (
-                              <button
-                                className="btn btn-primary"
-                                onClick={() =>
-                                  handleUnblockUser(user.id, courseCode)
-                                }
-                              >
-                                <i className="fas fa-unlock me-2"></i>Unblock
-                              </button>
-                            ) : (
-                              <button
-                                className="btn btn-warning"
-                                onClick={() =>
-                                  handleBlockUser(user.id, courseCode)
-                                }
-                              >
-                                <i className="fas fa-ban me-2"></i>Block
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="p-4">
+                  {filteredUserData[courseCode].map((user) => (
+                    <div 
+                      key={user.id} 
+                      className="flex justify-between items-center border-b last:border-b-0 py-4 hover:bg-gray-50 transition-colors"
+                    >
+                      <div>
+                        <p className="flex items-center text-gray-700 mb-1">
+                          <LucideMail className="mr-2 text-blue-500" />
+                          {user.email}
+                        </p>
+                        <p className="flex items-center text-gray-700 mb-1">
+                          <LucideUser className="mr-2 text-blue-500" />
+                          {user.displayName}
+                        </p>
+                        <p className="flex items-center text-gray-700">
+                          <LucideCalendar className="mr-2 text-blue-500" />
+                          Expiry Date:{" "}
+                          {user.expiryDate
+                            ? user.expiryDate.toLocaleDateString()
+                            : "N/A"}
+                        </p>
+                      </div>
+                      <div>
+                        {user.blockedCourses &&
+                        user.blockedCourses.includes(courseCode) ? (
+                          <button
+                            className="btn bg-green-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-600 transition-colors"
+                            onClick={() =>
+                              handleUnblockUser(user.id, courseCode)
+                            }
+                          >
+                            <LucideUnlock className="mr-2" />
+                            Unblock
+                          </button>
+                        ) : (
+                          <button
+                            className="btn bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-yellow-600 transition-colors"
+                            onClick={() =>
+                              handleBlockUser(user.id, courseCode)
+                            }
+                          >
+                            <LucideBan className="mr-2" />
+                            Block
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}

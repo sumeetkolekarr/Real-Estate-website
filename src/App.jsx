@@ -27,12 +27,9 @@ const App = () => {
      <div className="App">
        <ToastContainer />
        <Routes>
-         {/* Conditional routing based on maintenance mode */}
          {/* <Route path="/" element={<MaintainancePage />} /> */}
          
-         {/* Uncomment these when ready to enable full app functionality */}
          <Route path="/" element={<Home />} />
-         {/* <Route path="/homeDummy" element={<HomePage />} /> */}
          <Route path="/login" element={<SignIn />} />
          <Route path="/register" element={<SignUp />} />
          <Route path="/dashboard/*" element={<Dashboard />} />

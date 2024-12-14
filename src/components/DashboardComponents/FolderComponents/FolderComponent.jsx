@@ -2,11 +2,17 @@ import React, { useEffect } from 'react';
 import { shallowEqual, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ShowItems from "../ShowItems/ShowItems";
-import { db } from "../../../config/firebase"; // Make sure to correctly import your Firebase setup
+import { db } from "../../../config/firebase";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { 
+  LucideFolder, 
+  LucideFile, 
+  LucideInbox 
+} from "lucide-react";
 
 const FolderComponent = () => {
   const { folderId } = useParams();
+
   const { currentFolderData, childFolders, childFiles } = useSelector(
     (state) => ({
       currentFolderData: state.fileFolders.userFolders.find(
@@ -40,39 +46,54 @@ const FolderComponent = () => {
     checkAndUpdateDocId();
   }, [folderId, currentFolderData]);
 
-  const createdFiles =
+  const createdFiles = 
     childFiles && childFiles.filter((file) => file.data.url === null);
-  const uploadedFiles =
+  
+  const uploadedFiles = 
     childFiles && childFiles.filter((file) => file.data.data === null);
 
   return (
-    <div>
+    <div className="container mx-auto px-4 py-6">
       {childFolders.length > 0 || childFiles.length > 0 ? (
-        <>
+        <div className="space-y-6">
           {childFolders.length > 0 && (
-            <ShowItems
-              title={"Created Folders"}
-              type={"folder"}
-              items={childFolders}
-            />
+            <div className="bg-white shadow-md rounded-lg overflow-hidden">
+              <div className="bg-blue-600 text-white p-4 flex items-center">
+                <LucideFolder className="mr-2" />
+                <h2 className="text-xl font-semibold">Created Folders</h2>
+              </div>
+              <div className="p-4">
+                <ShowItems
+                  title={null}
+                  type="folder"
+                  items={childFolders}
+                />
+              </div>
+            </div>
           )}
-          {/* {createdFiles && createdFiles.length > 0 && (
-            <ShowItems
-              title={"Created Files"}
-              type={"file"}
-              items={createdFiles}
-            />
-          )} */}
+
           {uploadedFiles && uploadedFiles.length > 0 && (
-            <ShowItems
-              title={"Uploaded Files"}
-              type={"file"}
-              items={uploadedFiles}
-            />
+            <div className="bg-white shadow-md rounded-lg overflow-hidden">
+              <div className="bg-blue-600 text-white p-4 flex items-center">
+                <LucideFile className="mr-2" />
+                <h2 className="text-xl font-semibold">Uploaded Files</h2>
+              </div>
+              <div className="p-4">
+                <ShowItems
+                  title={null}
+                  type="file"
+                  items={uploadedFiles}
+                />
+              </div>
+            </div>
           )}
-        </>
+        </div>
       ) : (
-        <h3 className="text-center my-5">Empty Folder</h3>
+        <div className="flex flex-col items-center justify-center min-h-[300px] bg-gray-50 rounded-lg">
+          <LucideInbox className="w-16 h-16 text-gray-400 mb-4" />
+          <h3 className="text-xl text-gray-600 font-medium">Empty Folder</h3>
+          <p className="text-gray-500 mt-2">No folders or files in this directory</p>
+        </div>
       )}
     </div>
   );

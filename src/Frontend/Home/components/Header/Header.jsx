@@ -56,7 +56,12 @@ const Header = () => {
         style={
           menuOpened
             ? { position: "fixed", zIndex: "10", flexDirection: "column" }
-            : { position: "fixed", zIndex: "10", flexDirection: "row", justifyContent: 'space-between' }
+            : {
+                position: "fixed",
+                zIndex: "10",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }
         }
       >
         <img
@@ -90,7 +95,8 @@ const Header = () => {
             {isAuthenticated ? (
               <>
                 <div className="menu-mobile">
-                  {userEmail === "sumeetkolekarr555@gmail.com" && (
+                  {(userEmail === "sumeetkolekarr555@gmail.com" ||
+                    userEmail === "kreena1112@gmail.com") && (
                     <button
                       onClick={() => navigate("/dashboard")}
                       className="button"

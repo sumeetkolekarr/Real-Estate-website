@@ -1,6 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
-import { faFileAlt, faFolder } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { File, Folder, Edit, Trash2, Code } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { changeFolder, deleteFile, updateItemName } from "../../../redux/actionCreators/fileFoldersActionCreator";
@@ -8,7 +7,6 @@ import { toast } from "react-toastify";
 import fire from "../../../config/firebase";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import "./ShowItems.css";
 
 const ShowItems = ({ items, title, type }) => {
   const navigate = useNavigate();
@@ -61,7 +59,6 @@ const ShowItems = ({ items, title, type }) => {
           type.charAt(0).toUpperCase() + type.slice(1)
         } name updated successfully.`
       );
-      // Update the name in the Redux store
       dispatch(updateItemName(editItem.docId, newName, type));
       handleCloseEditModal();
     } catch (error) {
@@ -131,51 +128,53 @@ const ShowItems = ({ items, title, type }) => {
   }, [items]);
 
   return (
-    <div className="w-100 mt-5">
-      <h4 className="text-center border-bottom">{title}</h4>
-      <div className="row gap-2 p-4 flex-wrap d-flex align-items-center justify-content-center">
+    <div className="w-full mt-5">
+      <h4 className="text-center pb-2 border-b text-xl font-semibold">{title}</h4>
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 p-4">
         {sortedItems.map((item) => (
           <div
             key={item.docId}
-            className="col-md-2 py-3 text-center border d-flex flex-column"
+            className="bg-white shadow-md rounded-lg p-4 flex flex-col items-center text-center border"
           >
-            <FontAwesomeIcon
-              icon={type === "folder" ? faFolder : faFileAlt}
-              size="4x"
-              className="mb-3"
-            />
-            <p>{item.data.name}</p>
-            <button
-              className="btn btn-success mb-2"
-              onClick={() => handleClick(item.docId)}
-            >
-              View Details
-            </button>
-            {(user.uid === "3iEuFfnyXAXCvpcICqVl7QswgmA3" ||
-              user.uid === "CXjw9gHacUZoLBbZeuUZQv3Jdv83") && (
-              <>
-                <button
-                  className="btn btn-primary mb-2"
-                  onClick={() => handleShowEditModal(item)}
-                >
-                  Edit Name
-                </button>
-                <button
-                  className="btn btn-danger mb-2"
-                  onClick={() => handleDelete(item)}
-                >
-                  Delete
-                </button>
-                {type === "folder" && (
-                  <button
-                    className="btn btn-secondary"
-                    onClick={() => handleShowFolderCodeModal(item)}
-                  >
-                    Folder Code
-                  </button>
-                )}
-              </>
+            {type === "folder" ? (
+              <Folder className="w-16 h-16 text-blue-500 mb-3" />
+            ) : (
+              <File className="w-16 h-16 text-gray-500 mb-3" />
             )}
+            <p className="text-sm font-medium mb-2 truncate w-full">{item.data.name}</p>
+            <div className="flex flex-col space-y-2 w-full">
+              <button
+                className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 transition flex items-center justify-center"
+                onClick={() => handleClick(item.docId)}
+              >
+                View Details
+              </button>
+              {(user.uid === "3iEuFfnyXAXCvpcICqVl7QswgmA3" ||
+                user.uid === "CXjw9gHacUZoLBbZeuUZQv3Jdv83") && (
+                <div className="flex flex-col space-y-2">
+                  <button
+                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition flex items-center justify-center"
+                    onClick={() => handleShowEditModal(item)}
+                  >
+                    <Edit className="w-4 h-4 mr-1" /> Edit
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition flex items-center justify-center"
+                    onClick={() => handleDelete(item)}
+                  >
+                    <Trash2 className="w-4 h-4 mr-1" /> Delete
+                  </button>
+                  {type === "folder" && (
+                    <button
+                      className="bg-gray-500 text-white px-3 py-1 rounded text-sm hover:bg-gray-600 transition flex items-center justify-center"
+                      onClick={() => handleShowFolderCodeModal(item)}
+                    >
+                      <Code className="w-4 h-4 mr-1" /> Folder Code
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -188,7 +187,7 @@ const ShowItems = ({ items, title, type }) => {
         <Modal.Body>
           <input
             type="text"
-            className="form-control"
+            className="w-full px-3 py-2 border rounded"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
           />
@@ -211,7 +210,7 @@ const ShowItems = ({ items, title, type }) => {
         <Modal.Body>
           <input
             type="text"
-            className="form-control"
+            className="w-full px-3 py-2 border rounded"
             value={folderCode}
             onChange={(e) => setFolderCode(e.target.value)}
           />

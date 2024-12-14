@@ -15,11 +15,11 @@ const NavigationComponent = () => {
   const [showModal, setShowModal] = useState(false);
   const [folderCodeValue, setFolderCodeValue] = useState("");
   const [userCourses, setUserCourses] = useState([]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Load user's courses from localStorage when component mounts or userCourses changes
     const storedUserInfo = JSON.parse(localStorage.getItem("user-info")) || {};
     setUserCourses(storedUserInfo.code || []);
   }, [userCourses]);
@@ -39,7 +39,6 @@ const NavigationComponent = () => {
     e.preventDefault();
     if (folderCodeValue.trim() !== "") {
       try {
-        // Check if the course is already in user's courses
         if (userCourses.includes(folderCodeValue.trim())) {
           toast.warn("You have already added this course.");
           return;
@@ -48,19 +47,17 @@ const NavigationComponent = () => {
         let courseDocId = folderCodeValue.trim();
         let isValidCourse = false;
 
-        // First, check if the folderCodeValue is a valid docId
         const docRef = doc(db, "folders", folderCodeValue.trim());
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
           isValidCourse = true;
         } else {
-          // If not, check if it's a valid folderCode by querying the collection
           const q = query(collection(db, "folders"), where("folderCode", "==", folderCodeValue.trim()));
           const querySnapshot = await getDocs(q);
 
           if (!querySnapshot.empty) {
-            courseDocId = querySnapshot.docs[0].id; // Get the document ID
+            courseDocId = querySnapshot.docs[0].id;
             isValidCourse = true;
           }
         }
@@ -75,7 +72,6 @@ const NavigationComponent = () => {
           handleCloseModal();
           toast.success("Course added successfully!");
           
-          // Reload the page after 500ms
           setTimeout(() => {
             window.location.reload();
           }, 500);
@@ -103,100 +99,174 @@ const NavigationComponent = () => {
     navigate("/");
   };
 
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-      <div className="container">
-        <Link to="/" className="navbar-brand">
-          Numerology Material
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
+    <nav className="bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex">
+            <Link 
+              to="/" 
+              className="flex-shrink-0 flex items-center text-white font-bold text-xl hover:text-blue-200 transition duration-300"
+            >
+              Numerology Material
+            </Link>
+          </div>
+
+          <div className="flex items-center md:hidden">
+            <button 
+              onClick={toggleMobileMenu}
+              type="button" 
+              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-blue-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              aria-expanded="false"
+            >
+              <span className="sr-only">Open main menu</span>
+              {mobileMenuOpen ? (
+                <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
+          </div>
+
+          <div className="hidden md:flex md:items-center md:space-x-4">
             {isAuthenticated ? (
-              <>
-                <li className="nav-item mx-2">
-                  <p className="nav-link my-3">
-                    <span>Welcome, </span>
-                    <span className="text-warning">{user.name}</span>
-                  </p>
-                </li>
-                <li className="nav-item my-3 mx-2">
-                  {user.uid === "3iEuFfnyXAXCvpcICqVl7QswgmA3" ||
-                  user.uid === "CXjw9gHacUZoLBbZeuUZQv3Jdv83" ? (
-                    <NavLink
-                      to="/dashboard"
-                      className="btn btn-light btn-sm"
-                      activeClassName="active"
+              <div className="flex items-center space-x-4">
+                <span className="text-white">
+                  Welcome, <span className="text-yellow-300 font-semibold">{user.name}</span>
+                </span>
+
+                {user.uid === "3iEuFfnyXAXCvpcICqVl7QswgmA3" ||
+                user.uid === "CXjw9gHacUZoLBbZeuUZQv3Jdv83" ? (
+                  <NavLink
+                    to="/dashboard"
+                    className="px-3 py-2 rounded-md text-sm font-medium text-white bg-blue-700 hover:bg-blue-600 transition duration-300"
+                  >
+                    Dashboard
+                  </NavLink>
+                ) : location.pathname === "/" ? (
+                  <button 
+                    onClick={handleMyCourses}
+                    className="px-3 py-2 rounded-md text-sm font-medium text-white bg-blue-700 hover:bg-blue-600 transition duration-300"
+                  >
+                    My Courses
+                  </button>
+                ) : (
+                  <div className="flex space-x-2">
+                    <button 
+                      onClick={homeNav}
+                      className="px-3 py-2 rounded-md text-sm font-medium text-white bg-blue-700 hover:bg-blue-600 transition duration-300"
                     >
-                      Dashboard
-                    </NavLink>
-                  ) : location.pathname === "/" ? (
-                    <Button variant="light" size="sm" onClick={handleMyCourses}>
-                      My Courses
-                    </Button>
-                  ) : (
-                    <div>
-                      <Button
-                        variant="light"
-                        size="sm"
-                        className="me-2"
-                        onClick={homeNav}
-                      >
-                        Home
-                      </Button>
-                      <Button
-                        variant="light"
-                        size="sm"
-                        onClick={handleShowModal}
-                      >
-                        Add Course
-                      </Button>
-                    </div>
-                  )}
-                </li>
-                <li className="nav-item my-3">
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => dispatch(SignOutUser())}
-                  >
-                    Logout
-                  </Button>
-                </li>
-              </>
+                      Home
+                    </button>
+                    <button 
+                      onClick={handleShowModal}
+                      className="px-3 py-2 rounded-md text-sm font-medium text-white bg-green-600 hover:bg-green-500 transition duration-300"
+                    >
+                      Add Course
+                    </button>
+                  </div>
+                )}
+
+                <button 
+                  onClick={() => dispatch(SignOutUser())}
+                  className="px-3 py-2 rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-500 transition duration-300"
+                >
+                  Logout
+                </button>
+              </div>
             ) : (
-              <>
-                <li className="nav-item my-3 mx-2">
-                  <NavLink
-                    to="/login"
-                    className="btn btn-light btn-sm"
-                    activeClassName="active"
-                  >
-                    Login
-                  </NavLink>
-                </li>
-                <li className="nav-item my-3">
-                  <NavLink
-                    to="/register"
-                    className="btn btn-light btn-sm"
-                    activeClassName="active"
-                  >
-                    Register
-                  </NavLink>
-                </li>
-              </>
+              <div className="flex space-x-4">
+                <NavLink
+                  to="/login"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-white bg-blue-700 hover:bg-blue-600 transition duration-300"
+                >
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-white bg-green-600 hover:bg-green-500 transition duration-300"
+                >
+                  Register
+                </NavLink>
+              </div>
             )}
-          </ul>
+          </div>
+
+          {mobileMenuOpen && (
+            <div className="md:hidden absolute top-16 inset-x-0 bg-blue-800 z-50">
+              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                {isAuthenticated ? (
+                  <>
+                    <div className="text-white px-3 py-2 text-center">
+                      Welcome, <span className="text-yellow-300 font-semibold">{user.name}</span>
+                    </div>
+
+                    {user.uid === "3iEuFfnyXAXCvpcICqVl7QswgmA3" ||
+                    user.uid === "CXjw9gHacUZoLBbZeuUZQv3Jdv83" ? (
+                      <NavLink
+                        to="/dashboard"
+                        className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-700"
+                      >
+                        Dashboard
+                      </NavLink>
+                    ) : location.pathname === "/" ? (
+                      <button 
+                        onClick={handleMyCourses}
+                        className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-700"
+                      >
+                        My Courses
+                      </button>
+                    ) : (
+                      <>
+                        <button 
+                          onClick={homeNav}
+                          className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-700"
+                        >
+                          Home
+                        </button>
+                        <button 
+                          onClick={handleShowModal}
+                          className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-700"
+                        >
+                          Add Course
+                        </button>
+                      </>
+                    )}
+
+                    <button 
+                      onClick={() => dispatch(SignOutUser())}
+                      className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-red-600 hover:bg-red-500 mt-2"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <NavLink
+                      to="/login"
+                      className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-700"
+                    >
+                      Login
+                    </NavLink>
+                    <NavLink
+                      to="/register"
+                      className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-700"
+                    >
+                      Register
+                    </NavLink>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -213,6 +283,7 @@ const NavigationComponent = () => {
                 value={folderCodeValue}
                 onChange={handleFolderCodeChange}
                 placeholder="Enter folder code or document ID"
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </Form.Group>
           </Form>

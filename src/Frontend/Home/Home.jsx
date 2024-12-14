@@ -10,7 +10,7 @@ import Footer from './components/Footer/Footer'
 
 function Home() {
   return (
-    <div className="Home">
+    <div className="Home" style={{position: 'relative'}}>
       <div>
         <div className="white-gradient" />
         <Header />
