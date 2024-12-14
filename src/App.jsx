@@ -14,7 +14,7 @@ import CourseAccess from "./pages/CourseAccess/CourseAccess";
 import AccessDenied from "./components/DashboardComponents/AccessDenied/AccessDenied";
 
 import { checkIsLoggedIn } from "./redux/actionCreators/authActionCreator";
-import HomePage from "./pages/Homepage/HomePage";
+// import HomePage from "./pages/Homepage/HomePage";
 
 const App = () => {
    const dispatch = useDispatch();
@@ -32,7 +32,7 @@ const App = () => {
          
          {/* Uncomment these when ready to enable full app functionality */}
          <Route path="/" element={<Home />} />
-         <Route path="/homeDummy" element={<HomePage />} />
+         {/* <Route path="/homeDummy" element={<HomePage />} /> */}
          <Route path="/login" element={<SignIn />} />
          <Route path="/register" element={<SignUp />} />
          <Route path="/dashboard/*" element={<Dashboard />} />

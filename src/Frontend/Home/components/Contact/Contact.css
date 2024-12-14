@@ -42,14 +42,14 @@
 }
 
 .mode:hover {
-  scale: 1.1;
-  box-shadow: var(--shadow);
+  /* scale: 1.1; */
+  /* box-shadow: var(--shadow); */
 }
 
 .mode .button:hover {
   background: var(--blue-gradient);
   color: white;
-  scale: 0.8;
+  scale: 1;
 }
 
 @media (max-width: 1024px) {
@@ -72,4 +72,69 @@
     .mode{
         width: 100%;
     }
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.contact-grid .mode {
+  width: 432px;
+  margin-left: 12px;
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .contact-grid .mode {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .mode {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .c-left {
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-grid {
+    width: 100% !important;
+  }
+
+  .mode .flexStart {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .mode .detail {
+    align-items: center;
+  }
+
+  .mode .icon {
+    margin-bottom: 10px;
+  }
 }

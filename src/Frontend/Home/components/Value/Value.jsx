@@ -49,7 +49,7 @@ const Value = () => {
               return (
                 <AccordionItem className={`accordionItem ${className}`} uuid={i} key={i}>
                   <AccordionItemHeading>
-                    <AccordionItemButton className="flexCenter accordionButton ">
+                    <AccordionItemButton className="flexCenter accordionButton" style={{justifyContent: 'space-between'}}>
                         {/* just for getting state of item */}
                       <AccordionItemState>
                         {({ expanded }) =>

@@ -2,11 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import { BiMenuAltRight } from "react-icons/bi";
-import { getMenuStyles } from "../../utils/common";
-import useHeaderColor from "../../hooks/useHeaderColor";
-import OutsideClickHandler from "react-outside-click-handler";
 import fire from "../../../../config/firebase";
 import PuffLoader from "react-spinners/PuffLoader";
+import OutsideClickHandler from "react-outside-click-handler";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -14,7 +12,6 @@ const Header = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState(null);
-  const headerColor = useHeaderColor();
 
   useEffect(() => {
     const unsubscribe = fire.auth().onAuthStateChanged((user) => {
@@ -39,6 +36,10 @@ const Header = () => {
     }
   }, [navigate]);
 
+  const toggleMenu = () => {
+    setMenuOpened((prev) => !prev);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -48,8 +49,16 @@ const Header = () => {
   }
 
   return (
-    <div className={`h-wrapper ${headerColor}`}>
-      <div className="flexCenter paddings innerWidth h-container">
+    <div className="h-wrapper">
+      <div className="blur"></div>
+      <div
+        className="flexCenter paddings innerWidth h-container"
+        style={
+          menuOpened
+            ? { position: "fixed", zIndex: "10", flexDirection: "column" }
+            : { position: "fixed", zIndex: "10", flexDirection: "row", justifyContent: 'space-between' }
+        }
+      >
         <img
           src="/logo.png"
           style={{ marginRight: "32px" }}
@@ -62,78 +71,68 @@ const Header = () => {
             setMenuOpened(false);
           }}
         >
-          <div className="h-menu d-flex">
-            <a
-              style={{ display: "flex", alignItems: "center", margin: "0 9px" }}
-              href="#residencies"
-            >
-              Residencies
-            </a>
-            <a
-              style={{ display: "flex", alignItems: "center", margin: "0 9px" }}
-              href="#value"
-            >
-              Our Value
-            </a>
-            <a
-              style={{ display: "flex", alignItems: "center", margin: "0 9px" }}
-              href="#contact-us"
-            >
-              Contact
-            </a>
+          <div
+            className={`h-menu ${menuOpened ? "menu-opened" : ""}`}
+            style={menuOpened ? { display: "block" } : { display: "none" }}
+          >
+            <div className="mobileFlex">
+              <a href="#residencies" className="mobileAnchor">
+                Residencies
+              </a>
+              <a href="#value" className="mobileAnchor">
+                Our Value
+              </a>
+              <a href="#contact-us" className="mobileAnchor">
+                Contact
+              </a>
+            </div>
 
             {isAuthenticated ? (
-              <div className="flex space-x-2" style={{ overflow: "hidden" }}>
-                {userEmail === "sumeetkolekarr555@gmail.com" && (
-                  <button
-                    style={{ margin: "0 10px" }}
-                    onClick={() => navigate("/dashboard")}
-                    className="button"
-                  >
-                    Dashboard
+              <>
+                <div className="menu-mobile">
+                  {userEmail === "sumeetkolekarr555@gmail.com" && (
+                    <button
+                      onClick={() => navigate("/dashboard")}
+                      className="button"
+                    >
+                      Dashboard
+                    </button>
+                  )}
+                  {userEmail !== "sumeetkolekarr555@gmail.com" && (
+                    <button
+                      onClick={() => navigate("/mycourses")}
+                      className="button"
+                    >
+                      Courses
+                    </button>
+                  )}
+                  <button onClick={handleSignOut} className="button">
+                    Sign Out
                   </button>
-                )}
-                {userEmail !== "sumeetkolekarr555@gmail.com" && (
-                  <button
-                    style={{ margin: "0 10px" }}
-                    onClick={() => navigate("/mycourses")}
-                    className="button"
-                  >
-                    Courses
-                  </button>
-                )}
-                <button
-                  style={{ margin: "0 10px" }}
-                  onClick={handleSignOut}
-                  className="button"
-                >
-                  Sign Out
-                </button>
-              </div>
+                </div>
+              </>
             ) : (
-              <div className="flex space-x-2">
-                <button
-                  style={{ margin: "0 10px" }}
-                  onClick={() => navigate("/register")}
-                  className="button"
-                >
-                  Sign Up
-                </button>
-                <button
-                  style={{ margin: "0 10px" }}
-                  onClick={() => navigate("/login")}
-                  className="button"
-                >
-                  Login
-                </button>
-              </div>
+              <>
+                <div className="menu-mobile">
+                  <button
+                    onClick={() => navigate("/register")}
+                    className="button"
+                  >
+                    Sign Up
+                  </button>
+                  <button onClick={() => navigate("/login")} className="button">
+                    Login
+                  </button>
+                </div>
+              </>
             )}
           </div>
         </OutsideClickHandler>
 
         <div
           className="menu-icon"
-          onClick={() => setMenuOpened((prev) => !prev)}
+          onClick={toggleMenu}
+          style={menuOpened ? { display: "none" } : {}}
         >
           <BiMenuAltRight size={30} />
         </div>

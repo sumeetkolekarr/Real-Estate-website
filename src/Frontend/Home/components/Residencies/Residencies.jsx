@@ -1,10 +1,7 @@
 import React from "react";
 import data from "../../utils/slider.json";
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
-// Import Swiper styles
-import "swiper/css";
 import "./Residencies.css";
-import { sliderSettings } from "../../utils/common";
+
 const Residencies = () => {
   return (
     <div id="residencies" className="r-wrapper">
@@ -13,41 +10,21 @@ const Residencies = () => {
           <span className="orangeText">Best Choices</span>
           <span className="primaryText">Popular Courses</span>
         </div>
-        <Swiper {...sliderSettings}>
-          <SlideNextButton />
-          {/* slider */}
-          {data.map((card, i) => (
-            <SwiperSlide key={i}>
-              <div className="flexColStart r-card">
-                <img src={card.image} className="imgCardRounded" alt="home" />
 
-                <span className="secondaryText r-price">
-                  {/* <span style={{ color: "orange" }}>$</span>
-                  <span>{card.price}</span> */}
-                </span>
-                <span className="primaryText">{card.name}</span>
-                <span className="secondaryText">{card.detail}</span>
-              </div>
-            </SwiperSlide>
+        <div className="r-cards-grid" style={{ overflow: "hidden" }}>
+          {data.map((card, i) => (
+            <div key={i} className="flexColStart r-card">
+              <img src={card.image} className="imgCardRounded" alt="home" />
+              <span className="primaryText">{card.name}</span>
+              <span className="secondaryText" style={{ fontSize: "13px" }}>
+                {card.detail}
+              </span>
+            </div>
           ))}
-        </Swiper>
+        </div>
       </div>
     </div>
   );
 };
 
 export default Residencies;
-
-const SlideNextButton = () => {
-  const swiper = useSwiper();
-  return (
-    <div className="flexCenter r-buttons">
-      <button onClick={() => swiper.slidePrev()} className="r-prevButton">
-        &lt;
-      </button>
-      <button onClick={() => swiper.slideNext()} className="r-nextButton">
-        &gt;
-      </button>
-    </div>
-  );
-};

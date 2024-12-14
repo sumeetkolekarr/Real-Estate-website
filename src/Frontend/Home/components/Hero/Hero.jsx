@@ -4,7 +4,7 @@ import CountUp from "react-countup";
 import { motion } from "framer-motion";
 const Hero = () => {
   return (
-    <section className="hero-wrapper">
+    <section className="hero-wrapper" style={{marginTop: '5%'}}>
       <div className="paddings innerWidth flexCenter hero-container">
         <div className="flexColStart hero-left">
           <div className="hero-title">
